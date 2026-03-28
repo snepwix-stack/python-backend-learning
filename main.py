@@ -10,8 +10,8 @@ def show_menu():
 def add_task():
     t = input("Ваша задача: ")
     p = input("Приоритет задачи: ")
-    task = {"text": t, "priority": p, "id": 1, "done": False}
     data = load_tasks()
+    task = {"text": t, "priority": p, "id": len(data["tasks"]) + 1, "done": False}
     data["tasks"].append(task)
     save_tasks(data["tasks"])
 
