@@ -1,4 +1,5 @@
 from storage import load_tasks, save_tasks
+from models import Task
 
 
 def show_menu():
@@ -10,23 +11,26 @@ def show_menu():
 def add_task():
     t = input("Ваша задача: ")
     p = input("Приоритет задачи: ")
-    data = load_tasks()
-    task = {"text": t, "priority": p, "id": len(data["tasks"]) + 1, "done": False}
-    data["tasks"].append(task)
-    save_tasks(data["tasks"])
+    tasks = load_tasks()
+    task = Task(id=len(tasks) + 1, text=t, priority=p)
+    tasks.append(task)
+    save_tasks(tasks)
 
 
 def show_tasks():
-    for v in load_tasks()["tasks"]:
+    tasks = load_tasks()
+    if not tasks:
+        print("Список задач пуст.")
+        return
+    for v in tasks:
         print(v)
 
 
 def delete_task():
     show_tasks()
     id = int(input("Введите id задачи чтобы ее удалить: "))
-    data = load_tasks()
-    tasks = data["tasks"]
-    tasks = [task for task in tasks if task["id"] != id]
+    tasks = load_tasks()
+    tasks = [task for task in tasks if task.id != id]
     save_tasks(tasks)
 
 
