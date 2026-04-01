@@ -3,7 +3,9 @@ from models import Task
 
 
 def show_menu():
-    print("1. Добавить задачу \n2. Показать все задачи \n3. Удалить задачу \n4. Выход")
+    print(
+        "1. Добавить задачу \n2. Показать все задачи \n3. Удалить задачу \n4. Удалить все задачи\n5. Выход"
+    )
     choice = input("Выберите операцию: ")
     return choice
 
@@ -28,10 +30,31 @@ def show_tasks():
 
 def delete_task():
     show_tasks()
-    id = int(input("Введите id задачи чтобы ее удалить: "))
     tasks = load_tasks()
-    tasks = [task for task in tasks if task.id != id]
-    save_tasks(tasks)
+    if not tasks:
+        return
+    try:
+        id = int(input("Введите ID задачи чтобы ее удалить: "))
+        count = len(tasks)
+        tasks = [task for task in tasks if task.id != id]
+
+        if len(tasks) == count:
+            print(f"Задача с ID {id} не найдена.")
+        else:
+            save_tasks(tasks)
+            print(f"Задача №{id} удалена.")
+
+    except ValueError:
+        print("ОШИБКА! Вы ввели неверный ID.")
+
+
+def delete_all_tasks():
+    q = input("Вы уверены? y/n: ")
+    if q == "n":
+        return
+    else:
+        tasks = []
+        save_tasks(tasks)
 
 
 while True:
@@ -43,4 +66,6 @@ while True:
     elif choice == "3":
         delete_task()
     elif choice == "4":
+        delete_all_tasks()
+    elif choice == "5":
         break
